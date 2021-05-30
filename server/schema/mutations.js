@@ -21,6 +21,29 @@ const mutation = new GraphQLObjectType({
         });
       },
     },
+    login: {
+      type: UserType,
+      args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString },
+      },
+      resolve(parentValue, args, req) {
+        ///the key takeway is pass all required options to ohelper function
+        return AuthService.login({
+          email: args.email,
+          password: args.password,
+          req,
+        });
+      },
+    },
+    logout: {
+      type: UserType,
+      resolve(parentValue, args, req) {
+        const { user } = req;
+        req.logout();
+        return user;
+      },
+    },
   },
 });
 
